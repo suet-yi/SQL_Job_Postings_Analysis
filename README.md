@@ -123,7 +123,7 @@ Here's the breakdown of the most required skills for the TOP 10 highest-paying D
 
     Standard Data Analyst roles commonly require SQL, Python, Excel, and Power BI, while specialised roles require additional skills such as AWS, Hadoop, Linux, and Spark. This indicates that developing both core data analysis skills and industry-specific technical knowledge can improve access to higher-paying opportunities.
 
-![Top_Paying_Skills](figures\2_top_paying_jobs_skills.png)
+![Top_Paying_Skills](https://github.com/suet-yi/SQL_Job_Postings_Analysis/blob/main/figures/2_top_paying_jobs_skills.png)
 *Bar graph visualizing the frequency of each skill apprearing in the Top 10 highest-paying Data Analyst job postings in Singapore (2023).*
 
 ### Question 3: What are the most in-demand skills for Data Analysts in Singapore?
