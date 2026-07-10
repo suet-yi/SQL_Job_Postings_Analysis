@@ -1,7 +1,28 @@
 # Introduction
-# Background
-# Tools I used
+The demand for Data Analysts continues to grow, but understanding which skills and opportunities offer the greatest career value can be challenging for job seekers. This project analyses Data Analyst job postings in Singapore to identify the highest-paying jobs, the most in-demand skills, and the skills that provide the best balance between market demand and salary, helping aspiring Data Analysts make informed career decisions.
+
+🔍 SQL queries? Check them out here: [sql_queries_folder](/queries/)
+
+# Dataset
+This project uses a job postings dataset featured in [Luke Barousse's SQL Course](https://www.lukebarousse.com/sql) on YouTube. The dataset contains job postings from 2023, including information such as job titles, companies, salaries, locations, and required skills. It provides a realistic dataset for exploring the data analyst job market using SQL.
+
+# Tools Used
+To conduct an in-depth analysis of the job market for Data Analyst roles, I used the following key tools:
+1. **SQL** – Used to query, filter, aggregate, and analyse job posting data.
+2. **PostgreSQL** – Served as the relational database for storing and managing the dataset.
+3. **Visual Studio Code** – Used to write, organise, and execute SQL queries efficiently.
+4. **Git & GitHub** – Used for version control and to publish the project as a portfolio that showcases SQL skills.
+
+# Business Questions
+The following business questions guide the analysis of the Singapore Data Analyst job market. Each question focuses on a different aspect of career opportunities, from salary trends to skill demand, providing practical insights for aspiring Data Analysts.
+1. What are the highest-paying Data Analyst jobs in Singapore?
+2. What skills are required for the highest-paying Data Analyst jobs in Singapore?
+3. What are the most in-demand skills for Data Analysts in Singapore?
+4. What are the top-paying skills for Data Analysts in Singapore?
+5. What are the most optimal skills for Data Analysts in Singapore?
+
 # The Analysis
+The analysis was performed using SQL to explore salary trends, employer requirements, and skill demand within the Singapore Data Analyst job market. Each business question is supported by SQL queries, data visualisations, and key insights.
 
 ### Question 1: What are the highest-paying Data Analyst jobs in Singapore?
 To identify the highest-paying Data Analyst jobs in Singapore, I filtered job postings for Data Analyst roles with specified annual salaries and excluded records with missing salary information. I then joined the company table to include employer names and ranked the results by salary in descending order to retrieve the top 10 highest-paying positions.
@@ -40,7 +61,7 @@ Here's a breakdown of the TOP 10 highest-paying Data Analyst position in Singapo
 
     Nine of the top ten highest-paying jobs are full-time roles, while only one is a contract position. This indicates that employers are more likely to offer higher salaries for permanent Data Analyst positions in Singapore.
 
-| Rank | Job Title | Company | Employment Type | Annual Salary (USD) |
+| Rank | Job Title | Company | Employment Type | Annual Salary ($) |
 |-----:|-----------|---------|-----------------|--------------------:|
 | 1 | Research Scientist - Thermal Systems | Bosch Group | Full-time | 149,653 |
 | 2 | Research Scientist - Instrumented Living Spaces | Bosch Group | Full-time | 149,653 |
@@ -53,7 +74,7 @@ Here's a breakdown of the TOP 10 highest-paying Data Analyst position in Singapo
 | 9 | Market Data Specialist, Feeds | Jane Street | Full-time | 109,500 |
 | 10 | Data Analyst | ADDX | Full-time | 105,000 |
 
-*Table of the Top 10 Highest-Paying Data Analyst Job Postings in Singapore (2023)*
+*Table showing the Top 10 highest-paying Data Analyst job postings in Singapore (2023).*
 
 ### Question 2: What skills are required for the highest-paying Data Analyst jobs in Singapore?
 To identify the skills required for the highest-paying Data Analyst jobs, I first selected the top 10 highest-paying positions from the previous analysis. I then joined the job postings with the skills tables to retrieve the technical skills associated with each role, allowing me to identify the competencies most commonly required by high-paying employers.
@@ -146,7 +167,109 @@ This result also supports the findings from Question 2. While Python, SQL, and T
 | 4 | Tableau | 2,216 |
 | 5 | R | 1,326 |
 
-*Table 2. Top 5 Most In-Demand Skills for Data Analyst Jobs in Singapore (2023)*
+*Table showing the Top 5 most in-demand skills for Data Analyst jobs in Singapore (2023).*
+
+### Question 4: What are the top-paying skills for Data Analysts in Singapore?
+To identify the highest-paying skills for Data Analysts in Singapore, I joined the job postings table with the skills tables using the job ID and skill ID. I then filtered the dataset to include only Data Analyst jobs in Singapore with specified annual salaries. Next, I calculated the average salary for each skill, grouped the results by skill, and ranked them in descending order to identify the top 10 highest-paying skills.
+
+```SQL
+SELECT
+    skills,
+    ROUND(AVG(salary_year_avg),0) AS avg_yearly_salary
+FROM
+    job_post_list
+INNER JOIN
+    skills_job ON job_post_list.job_id = skills_job.job_id
+INNER JOIN
+    skills_list ON skills_job.skill_id = skills_list.skill_id
+WHERE
+    job_title_short = 'Data Analyst'
+    AND job_country = 'Singapore'
+    AND salary_year_avg IS NOT NULL
+GROUP BY
+    skills
+ORDER BY
+    avg_yearly_salary DESC
+LIMIT 10;
+```
+
+Here's a breakdown of results for top-paying skills for Data Analysts in Singapore (2023):
+1. **Big data and specialised analytics tools command the highest salaries.**
+
+    Spark, Looker, and Linux are associated with the highest average salaries, suggesting that employers pay a premium for advanced technical skills beyond traditional data analysis.
+2. **Python remains one of the most valuable core skills.**
+
+    While tools such as Spark and Looker offer higher average salaries, Python ranks among the top-paying skills and also appeared as one of the most in-demand skills in the previous analyses, making it one of the strongest skills to learn for both employability and earning potential.
+
+| Rank | Skill | Average Annual Salary ($) |
+|-----:|-------|----------------------------:|
+| 1 | Spark | 121,027 |
+| 2 | Looker | 111,175 |
+| 3 | Linux | 109,500 |
+| 4 | Flow | 105,558 |
+| 5 | Python | 103,713 |
+| 6 | Excel | 100,569 |
+| 7 | Qlik | 100,500 |
+| 8 | NumPy | 100,500 |
+| 9 | Pandas | 100,500 |
+| 10 | SAS | 100,500 |
+
+*Table showing the Top 10 highest-paying technical skills for Data Analyst jobs in Singapore (2023). General productive tools (e.g., Word, PowerPoint) are excluded to focus on technical skills.*
+
+### Question 5: What are the most optimal skills for Data Analysts in Singapore?
+To identify the most optimal skills for Data Analysts in Singapore, I joined the job postings table with the skills tables and filtered for Data Analyst positions located in Singapore with specified annual salaries. I then counted how often each skill appeared in job postings and calculated its average annual salary. Finally, I ranked the skills based on demand while also considering their average salary to identify skills that offer both strong job opportunities and high earning potential.
+
+```sql
+SELECT 
+    skills_list.skills,
+    COUNT(job_post_list.job_id) AS demand_count,
+    ROUND(AVG(job_post_list.salary_year_avg),0) AS avg_yearly_salary
+FROM
+    job_post_list
+INNER JOIN
+    skills_job ON job_post_list.job_id = skills_job.job_id
+INNER JOIN
+    skills_list ON skills_job.skill_id = skills_list.skill_id
+WHERE
+    job_title_short = 'Data Analyst'
+    AND job_country = 'Singapore'
+    AND salary_year_avg IS NOT NULL
+GROUP BY
+    skills_list.skills
+HAVING
+    COUNT(job_post_list.job_id) >= 5
+ORDER BY
+    avg_yearly_salary DESC,
+    demand_count DESC
+```
+
+Here's a breakdown of the most optimal skills for Data Analysts in Singapore (2023):
+- **Python offers the best balance of demand and salary**, appearing in 12 job postings while providing an average annual salary of $103,713. This makes it one of the most valuable skills for Data Analysts in Singapore.
+- **SQL is the most in-demand skill**, while Spark offers the highest average salary. This suggests that mastering SQL is essential for employability, whereas learning advanced technologies such as Spark can lead to higher-paying
+
+| Skill | Demand Count | Average Annual Salary ($) |
+|-------|-------------:|----------------------------:|
+| Spark | 5 | 121,027 |
+| Python | 12 | 103,713 |
+| Excel | 8 | 100,569 |
+| R | 6 | 94,676 |
+| Tableau | 9 | 92,856 |
+| AWS | 5 | 92,435 |
+| SQL | 16 | 86,853 |
+
+*Table showing the most optimal skills for Data Analyst jobs in Singapore (2023).*
 
 # What I learned
+Throughout this project, I expanded my SQL toolkit by applying a variety of techniques to answer real-world business questions, including:
+- Improved my ability to write complex SQL queries using joins, aggregations, and Common Table Expressions (CTEs).
+- Learned how to transform raw data into meaningful business insights by answering practical analytical questions.
+- Gained experience analysing the relationship between salary, skill demand, and career opportunities.
+- Strengthened my understanding of data storytelling by presenting findings through tables, charts, and concise insights.
+- Developed a complete SQL portfolio project that demonstrates both technical querying skills and analytical thinking.
+
 # Conclusions
+### Key Insights
+The analysis shows that while SQL and Python are the most in-demand skills for Data Analysts in Singapore, specialised technologies such as Spark are associated with the highest salaries. Skills such as Python, Tableau, and Excel provide a strong balance between market demand and earning potential, making them valuable areas for aspiring Data Analysts to focus on.
+
+### Closing Thoughts
+This project demonstrates how SQL can be used to extract meaningful insights from real-world job market data. By combining data querying, analysis, and visualisation, the project provides practical recommendations for skill development while showcasing the SQL techniques and analytical skills required in a Data Analyst role.

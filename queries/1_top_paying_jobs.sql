@@ -42,7 +42,7 @@ The remaining top-paying jobs include roles such as Fraud Data Analyst, Carbon D
 3. Most high-paying opportunities are full-time positions.
 Nine of the top ten highest-paying jobs are full-time roles, while only one is a contract position. This indicates that employers are more likely to offer higher salaries for permanent Data Analyst positions in Singapore.
 
-| Rank | Job Title | Company | Employment Type | Annual Salary (USD) |
+| Rank | Job Title | Company | Employment Type | Annual Salary ($) |
 |-----:|-----------|---------|-----------------|--------------------:|
 | 1 | Research Scientist - Thermal Systems | Bosch Group | Full-time | 149,653 |
 | 2 | Research Scientist - Instrumented Living Spaces | Bosch Group | Full-time | 149,653 |
